@@ -1,0 +1,80 @@
+/* shop-categories.css */
+
+.shop-categories-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.shop-category {
+    flex: 1 1 23%; /* Подгонка по размеру */
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.shop-category:hover {
+    transform: translateY(-10px);
+}
+
+.shop-category img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.shop-category h3 {
+    margin-top: 10px;
+    font-size: 18px;
+}
+/* Стили для отображения категорий товаров в 4 колонки */
+.shop-categories ul.products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+    gap: 20px; /* Отступы между колонками */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.shop-categories li.product {
+    position: relative;
+    text-align: center;
+}
+
+.shop-categories .product img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Стили для отображения названия категории поверх изображения */
+.shop-categories .product .woocommerce-loop-category__title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Подгонка для мобильных устройств */
+@media (max-width: 768px) {
+    .shop-categories ul.products {
+        grid-template-columns: repeat(2, 1fr); /* 2 колонки для мобильных устройств */
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-categories ul.products {
+        grid-template-columns: 1fr; /* 1 колонка для очень маленьких экранов */
+    }
+}

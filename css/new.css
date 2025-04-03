@@ -1,0 +1,537 @@
+.custom-product-categories-wrapper {
+    margin-bottom: 20px;
+}
+
+.custom-category-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+    position: relative; /* Добавляем, чтобы ::after работал */
+    display: inline-block; /* Чтобы линия не растягивалась на всю ширину */
+    padding-bottom: 5px; /* Отступ перед линией */
+}
+
+.custom-category-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px; /* Фиксированная ширина линии */
+    height: 2px; /* Делаем линию чуть толще */
+    background-color: #e94e1b;
+}
+
+.custom-product-categories {
+    list-style: none;
+    padding: 10px;
+    
+} 
+
+.custom-product-categories a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #fff;
+}
+
+.custom-product-categories a:hover {
+    color: #FB326B;
+}
+/* Убираем кнопку "Добавить в корзину" только для похожих товаров */
+.elementor-widget-woocommerce-product-related .products li.product .add_to_cart_button {
+    display: none;
+}
+/* Заголовок для похожих товаров */
+.elementor-widget-woocommerce-product-related h2 {
+    font-size: 20px !important;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+       
+    position: relative; /* Добавляем, чтобы ::after работал */
+    display: inline-block; /* Чтобы линия не растягивалась на всю ширину */
+    padding-bottom: 5px; /* Отступ перед линией */
+}
+
+/* Линия под заголовком */
+.elementor-widget-woocommerce-product-related h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px; /* Фиксированная ширина линии */
+    height: 2px; /* Толщина линии */
+    background-color: #e94e1b; /* Цвет линии */
+}
+/* Стили для выравнивания текста "Стоимость:" и самой цены */
+.single-product .product .price-label {
+    font-weight: bold;  /* Сделать "Стоимость:" жирным */
+}
+
+.single-product .product .price {
+     
+    text-align: right;  /* Выравнивание цены по правому краю */
+    display: block;     /* Чтобы цена была на новой строке */
+}
+/* Стили для карточек похожих товаров */
+.related.products ul.products li.product {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd; /* Рамка вокруг карточки */
+    padding: 10px;
+    margin-bottom: 10px;
+    
+    border-radius: 5px; /* Скругление углов */
+}
+
+/* Левая колонка - изображение товара */
+.related.products ul.products li.product img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+     
+     flex-shrink: 0; /* Запрет на сжатие изображения */
+}
+
+/* Правая колонка - заголовок и цена */
+.related.products ul.products li.product .woocommerce-loop-product__title {
+    font-size: 15px !important;
+    font-weight: bold;
+    margin: 0;
+    float: left;
+}
+
+/* Стили для цены */
+.related.products ul.products li.product .price {
+    font-size: 18px !important;
+    color: #e94e1b; /* Цвет цены */
+    font-weight: bold;
+    display: block; 
+
+}
+.custom-category-sidebar {
+ 
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.custom-category-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 0; 
+    position: relative;
+    flex-wrap: wrap; /* Это позволит подкатегориям уходить на новую строку */
+}
+
+.subcategory-list {
+    list-style: none;
+    padding-left: 30px;
+    display: none; /* Скрыто по умолчанию */
+    width: 100%; /* Подкатегории идут на всю ширину, не остаются в одной линии */
+    margin-top: 5px; /* Добавляем отступ для читабельности */
+}
+
+.category-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+    flex-grow: 1;
+}
+
+.category-link:hover {
+    color: #e94e1b;
+}
+
+/* Кнопка раскрытия */
+.subcategory-toggle {
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #fff;
+    padding: 2px 16px;
+    border-radius: 50%;
+    font-size: 14px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Пустой placeholder для выравнивания, если у категории нет подкатегорий */
+.subcategory-placeholder {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+
+.subcategory-list li {
+    padding: 3px 0;
+}
+
+.subcategory-list li a {
+    text-decoration: none;
+    color: #666;
+}
+
+.subcategory-list li a:hover {
+    color: #e94e1b;
+}
+/* Стили для лейбла "Новый" */
+.new-product-label {
+    
+    top: 10px;
+    left: 10px;
+    
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #fff;
+    z-index: 10;
+    float: right;
+    text-transform: uppercase;
+}
+
+.woocommerce-loop-product__link {
+    position: relative; /* Необходимо для правильного отображения лейбла */
+}
+.archive .category-list {
+    list-style: none;
+    padding: 0; 
+}
+
+.archive .category-item {
+     display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 0; 
+    position: relative;
+    flex-wrap: wrap; /* Это позволит подкатегориям уходить на новую строку */
+}
+.archive .category-item a{
+    display: block;
+    padding: 6px 8px;
+    background: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+    font-size: 15px;
+}
+.archive .category-link {
+     font-weight: bold;
+    text-decoration: none;
+    color: #333;
+    flex-grow: 1;
+}
+
+.archive .category-link:hover {
+    color: #e94e1b; /* Цвет при наведении */
+}
+
+/* Кнопка раскрытия */
+.archive .subcategory-toggle {
+   cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #fff;
+    padding: 2px 16px;
+    border-radius: 50%;
+    font-size: 14px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Пустой placeholder для выравнивания, если у категории нет подкатегорий */
+.archive .subcategory-placeholder {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+
+/* Скрыть подкатегории по умолчанию */
+.archive .subcategory-list {
+    list-style: none;
+    padding-left: 30px;
+    display: none; /* Скрыто по умолчанию */
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Подкатегории */
+.archive .subcategory-list li {
+    padding: 3px 0;
+}
+
+.archive .subcategory-list li a {
+    text-decoration: none;
+     
+}
+
+.archive .subcategory-list li a:hover {
+    color: #e94e1b; /* Цвет при наведении */
+}
+
+/* Стили для заголовка категории */
+.archive .custom-category-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Линия под заголовком категории */
+.archive .custom-category-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #e94e1b;
+}
+.archive .term-description {
+    font-size: 14px; /* Размер шрифта для текста описания */
+    line-height: 1.6; /* Межстрочный интервал для лучшей читаемости */
+    
+    padding: 0 20px; /* Отступы по бокам для текста */
+    margin-top: 10px; /* Отступ сверху */
+}
+
+.archive .term-description h2 {
+    font-size: 25px; /* Размер шрифта заголовка */
+    text-align: left; /* Выравнивание по левому краю */
+    margin-bottom: 10px; /* Отступ снизу для заголовка */
+}
+.category-list .current-cat > a,
+.category-list .current-subcat > a {
+    font-weight: bold;
+     color: #fff;
+    background: #e94e1b;
+}
+
+.category-list .current-subcat > a:hover {
+    font-weight: bold;
+     color: #e94e1b;
+    background: #fff;
+border: 1px solid #e94e1b;
+}
+.category-list .parent-of-current > ul {
+    display: block !important; /* Открываем подкатегории */
+}
+
+.custom-product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.custom-product-item {
+    display: grid;
+    grid-template-columns: 150px 1fr 50px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.product-image img {
+    width: 130px;
+    height: 130px;
+    flex: 1;
+  border-radius: 300px;
+	clear:both;
+}
+
+.product-info {
+    padding: 0 15px;
+}
+
+.product-title {
+    font-size: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.product-price {
+    font-size: 25px;
+  font-weight: bold;
+  color: #fff;
+  float: right;
+  line-height: 0px;
+}
+.product-condition {
+display: inline-block;
+    margin-right: 10px;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+}
+.product-condition-price {
+display: flex; 
+justify-content: space-between; 
+align-items: center;
+    place-content: end;
+
+}
+.price-note {
+    font-size: 15px;
+    color: #fff;
+	clear: both;
+}
+
+.product-action {
+    text-align: center;
+}
+
+.product-action .add-to-cart {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #e94e1b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.product-action .add-to-cart:hover {
+    color: #e94e1b;
+    border: 1px solid #e94e1b;
+    background: #fff;
+}
+.price-note-container {
+    margin-top: 100px;
+ border-top: 1px solid #ccc;
+}
+.price-note {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 600;
+    float: right;
+}
+.dynamic-price {
+    font-size: 25px;
+  font-weight: bold;
+  color: #fff;
+  float: right;
+  line-height: 0px;
+}
+.product-quantity; {
+    float: inline-end;
+    height: 50px;
+    width: 150px;
+}
+.archive-description {
+    max-height: 80px; /* Показываем только 80px текста */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.archive-description.expanded {
+    max-height: 1000px; /* Разворачиваем */
+}
+
+.show-more-btn {
+      display: inline-block;
+    background: #ffffff;
+    color: #333;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+    float: right;
+    font-weight: 600;
+    margin: 20px 0px 20px 20px;
+}
+
+.show-more-btn:hover {
+    background: #005a87;
+	color:#fff;
+}
+.term-description {
+    max-height: 300px; /* Показываем только часть текста */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.term-description.expanded {
+    max-height: 1000px; /* Полностью разворачиваем */
+}
+
+.show-more-btn {
+    display: inline-block;
+    background: #e94e1b;
+    color: white;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.show-more-btn:hover {
+    background: #005a87;
+}
+
+.custom-header {
+    background-color: #333;
+    padding: 20px 0;
+}
+
+.custom-header .logo img {
+    max-width: 200px;
+}
+
+.custom-header .main-navigation {
+    text-align: center;
+}
+
+.custom-header .main-navigation a {
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+/* Стили для кнопок WooCommerce */
+.woocommerce a.button, 
+.woocommerce button.single_add_to_cart_button, 
+.woocommerce button[name=add-to-cart], 
+.woocommerce button[type=submit]:not(.wp-block-search__button), 
+.woocommerce input[name=submit] {
+    
+    padding: 10px;
+    margin-top: 1px;
+}
+
+ 
+
+/* Стили для кнопки отправки поиска в Elementor */
+.elementor-5189 .elementor-element.elementor-element-730a252 .e-search-submit {
+    background-color: #551C5E;
+    height: 34px !important;
+}

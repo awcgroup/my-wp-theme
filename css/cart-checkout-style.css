@@ -1,0 +1,25 @@
+#cart-page, #checkout-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cart-page, .checkout-page {
+    padding: 40px 0;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.woocommerce-cart-form, .woocommerce-checkout {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}

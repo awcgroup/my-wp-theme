@@ -1,0 +1,210 @@
+.sale-products {
+    max-width: 1640px;
+    margin: 60px auto 0;
+    text-align: center;
+}
+.sale-products h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+/* Общая стилизация контейнера товара */
+.sale-product {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.09);
+}
+.sale-product h3 {
+    font-size: 18px;
+    color: #000;
+    line-height: 1.1em;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px 0;
+}
+.sale-product a{
+   text-decoration:none;
+}
+
+/* Цена товара */
+.sale-product .sale-price {
+    font-size: 23px;
+    color: #000; /* черный цвет для цены */
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Старые цены */
+.sale-product .old-price {
+    font-size: 14px;
+    text-decoration: line-through;
+    color: #666;
+}
+
+/* Контейнер для изображения товара */
+.product-image-container {
+    position: relative; /* Позволяет позиционировать элементы внутри контейнера */
+}
+
+/* Стиль для категории товара */
+.product-category {
+   position: absolute;
+    top: -10px;
+    left: -10px;
+    background-color: #fff;
+    color: #000;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.product-category a{
+    color: #000;
+text-decoration:underline;
+}
+
+
+/* Кнопка "Оформить заказ" */
+.sale-order-button {
+    display: inline-block;
+    color: #28a745;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+/* Стили при наведении на кнопку */
+.sale-order-button:hover {
+    background-color: #28a745;  /* Зеленый фон */
+    color: #fff;                /* Белый текст */
+    border: 0;                  /* Убираем границу */
+}
+ 
+/* Стиль для контейнера цен */
+.sale-product .sale-price,
+.sale-product .old-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Стили для отображения акционной и старой цены в одной строке */
+.price-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Расстояние между ценами */
+}
+
+/* Стиль для акционной цены */
+.sale-price {
+    font: 700 18px / 22px "YS Text", -apple-system, BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+    font: 700 var(--depot-font-size-text-l) var(--depot-font-text);
+    font-feature-settings: "pnum" on, "lnum" on;
+    color: #d10000; /* Цвет для акционной цены */
+}
+
+/* Стиль для старой цены */
+.old-price {
+    font: 12px / 16px "YS Text", -apple-system, BlinkMacSystemFont, Arial, Helvetica, sans-serif;
+    font: var(--depot-font-size-caption) var(--depot-font-text);
+    font-feature-settings: "pnum" on, "lnum" on;
+    text-decoration: line-through;
+    color: #888; /* Цвет для старой цены */
+}
+
+/* Гибкая обертка для списка товаров */
+.sale-products-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    max-width: 100%;
+    padding: 10px;
+    justify-content: flex-start;
+    scrollbar-width: none; /* Для Firefox */
+}
+
+.sale-products-container::-webkit-scrollbar {
+    display: none; /* Для Chrome, Safari */
+}
+
+/* Обертка для контейнера с товарами */
+.sale-products-container-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+/* Стрелки прокрутки */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #e63946; /* Ярко-красный фон */
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.left-arrow {
+    left: 10px;
+}
+
+.right-arrow {
+    right: 10px;
+}
+
+/* Адаптация для планшетов (3 товара в ряду) */
+@media (max-width: 1024px) {
+    .sale-product {
+        flex: 0 0 calc(33.333% - 20px);
+    }
+}
+
+/* Адаптация для мобильных (2 товара в ряду) */
+@media (max-width: 768px) {
+    .sale-product {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+/* Адаптация для маленьких экранов (1 товар в ряду) */
+@media (max-width: 480px) {
+    .sale-product {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}

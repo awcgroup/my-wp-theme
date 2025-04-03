@@ -464,3 +464,21 @@ function custom_product_list_shortcode($atts) {
 }
 
 add_shortcode('custom_product_list', 'custom_product_list_shortcode');
+
+//Перенаправление поиска товаров на шаблон search-product
+add_filter( 'template_include', 'custom_product_search_template' );
+function custom_product_search_template( $template ) {
+    if ( is_search() && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'product' ) {
+        return locate_template( 'product-search.php' );
+    }
+    return $template;
+}
+
+// Все поиски только по товарам post_type product
+add_action('pre_get_posts', 'force_product_search');
+function force_product_search($query) {
+    if ($query->is_search && !is_admin() && empty($_GET['post_type'])) {
+        $query->set('post_type', 'product'); // Все поиски только по товарам
+    }
+    return $query;
+}

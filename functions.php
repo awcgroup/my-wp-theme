@@ -465,20 +465,21 @@ function custom_product_list_shortcode($atts) {
 
 add_shortcode('custom_product_list', 'custom_product_list_shortcode');
 
-//Перенаправление поиска товаров на шаблон search-product
-add_filter( 'template_include', 'custom_product_search_template' );
-function custom_product_search_template( $template ) {
-    if ( is_search() && isset( $_GET['post_type'] ) && $_GET['post_type'] === 'product' ) {
-        return locate_template( 'product-search.php' );
+function custom_woocommerce_search_template($template) {
+    if (is_search() && get_query_var('post_type') === 'product') {
+        $new_template = locate_template('woocommerce-search.php');
+        if (!empty($new_template)) {
+            return $new_template;
+        }
     }
     return $template;
 }
+add_filter('template_include', 'custom_woocommerce_search_template');
 
-// Все поиски только по товарам post_type product
-add_action('pre_get_posts', 'force_product_search');
-function force_product_search($query) {
-    if ($query->is_search && !is_admin() && empty($_GET['post_type'])) {
-        $query->set('post_type', 'product'); // Все поиски только по товарам
+//подключаем стили для woocommerce-search.php
+function enqueue_search_styles() {
+    if (is_search() && class_exists('WooCommerce')) { // Подключаем только на странице поиска WooCommerce
+        wp_enqueue_style('search-css', get_template_directory_uri() . '/css/search.css', array(), null);
     }
-    return $query;
 }
+add_action('wp_enqueue_scripts', 'enqueue_search_styles');

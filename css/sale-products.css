@@ -185,6 +185,8 @@ text-decoration:underline;
     right: 10px;
 }
 
+
+
 /* Адаптация для планшетов (3 товара в ряду) */
 @media (max-width: 1024px) {
     .sale-product {

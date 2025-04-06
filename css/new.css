@@ -10,6 +10,7 @@
     position: relative; /* Добавляем, чтобы ::after работал */
     display: inline-block; /* Чтобы линия не растягивалась на всю ширину */
     padding-bottom: 5px; /* Отступ перед линией */
+    margin-top: 0;
 }
 
 .custom-category-title::after {
@@ -211,20 +212,26 @@
 .woocommerce-loop-product__link {
     position: relative; /* Необходимо для правильного отображения лейбла */
 }
-.archive .category-list {
+.archive .category-list,
+.search .category-list,
+.elementor-page .category-list {
     list-style: none;
     padding: 0; 
 }
 
-.archive .category-item {
-     display: flex;
+.archive .category-item,
+.search .category-item,
+.elementor-page .category-item {
+    display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 5px 0; 
     position: relative;
     flex-wrap: wrap; /* Это позволит подкатегориям уходить на новую строку */
 }
-.archive .category-item a{
+.archive .category-item a,
+.search .category-item a,
+.elementor-page .category-item a {
     display: block;
     padding: 6px 8px;
     background: #ffffff;
@@ -234,19 +241,25 @@
     color: #333;
     font-size: 15px;
 }
-.archive .category-link {
+.archive .category-link,
+.search .category-link,
+.elementor-page .category-link {
      font-weight: bold;
     text-decoration: none;
     color: #333;
     flex-grow: 1;
 }
 
-.archive .category-link:hover {
+.archive .category-link:hover,
+.search .category-link:hover,
+.elementor-page .category-link:hover {
     color: #e94e1b; /* Цвет при наведении */
 }
 
 /* Кнопка раскрытия */
-.archive .subcategory-toggle {
+.archive .subcategory-toggle, 
+.search .subcategory-toggle, 
+.elementor-page .subcategory-toggle {
    cursor: pointer;
     font-weight: bold;
     margin-right: 10px;
@@ -263,14 +276,18 @@
 }
 
 /* Пустой placeholder для выравнивания, если у категории нет подкатегорий */
-.archive .subcategory-placeholder {
+.archive .subcategory-placeholder,
+.search .subcategory-placeholder,
+.elementor-page .subcategory-placeholder {
     width: 20px;
     height: 20px;
     display: inline-block;
 }
 
 /* Скрыть подкатегории по умолчанию */
-.archive .subcategory-list {
+.archive .subcategory-list,
+.search .subcategory-list,
+.elementor-page .subcategory-list {
     list-style: none;
     padding-left: 30px;
     display: none; /* Скрыто по умолчанию */
@@ -279,21 +296,29 @@
 }
 
 /* Подкатегории */
-.archive .subcategory-list li {
+.archive .subcategory-list li,
+.search .subcategory-list li,
+.elementor-page .subcategory-list li {
     padding: 3px 0;
 }
 
-.archive .subcategory-list li a {
+.archive .subcategory-list li a,
+.search .subcategory-list li a,
+.elementor-page .subcategory-list li a {
     text-decoration: none;
      
 }
 
-.archive .subcategory-list li a:hover {
+.archive .subcategory-list li a:hover,
+.search .subcategory-list li a:hover,
+.elementor-page .subcategory-list li a:hover {
     color: #e94e1b; /* Цвет при наведении */
 }
 
 /* Стили для заголовка категории */
-.archive .custom-category-title {
+.archive .custom-category-title,
+.search .custom-category-title,
+.elementor-page .custom-category-title {
     font-size: 25px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -304,7 +329,9 @@
 }
 
 /* Линия под заголовком категории */
-.archive .custom-category-title::after {
+.archive .custom-category-title::after,
+.search .custom-category-title::after,
+.elementor-page .custom-category-title::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -313,7 +340,9 @@
     height: 2px;
     background-color: #e94e1b;
 }
-.archive .term-description {
+.archive .term-description,
+.search .term-description,
+.elementor-page .term-description {
     font-size: 14px; /* Размер шрифта для текста описания */
     line-height: 1.6; /* Межстрочный интервал для лучшей читаемости */
     
@@ -321,7 +350,9 @@
     margin-top: 10px; /* Отступ сверху */
 }
 
-.archive .term-description h2 {
+.archive .term-description h2,
+.search .term-description h2,
+.elementor-page .term-description h2 {
     font-size: 25px; /* Размер шрифта заголовка */
     text-align: left; /* Выравнивание по левому краю */
     margin-bottom: 10px; /* Отступ снизу для заголовка */
@@ -528,10 +559,71 @@ align-items: center;
     margin-top: 1px;
 }
 
- 
-
 /* Стили для кнопки отправки поиска в Elementor */
 .elementor-5189 .elementor-element.elementor-element-730a252 .e-search-submit {
     background-color: #551C5E;
     height: 34px !important;
+}
+
+/* Search Page Styles */
+.woocommerce-product-search {
+    /* Стили для формы поиска */
+    margin: 2rem 0;
+}
+
+/* Стили для H1 */
+/* Стили для заголовка поиска */
+.elementor-heading-title[class*="elementor-size-"] {
+    font-size: 28px !important;
+    font-weight: 500;
+    color: #FFF !important;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.elementor-heading-title .search-highlight {
+    color: #333;
+    font-weight: 600;
+    position: relative;
+    padding: 0 2px;
+}
+
+.elementor-heading-title .search-highlight:after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    opacity: 0.7;
+}
+ 
+/* Адаптивность */
+@media (max-width: 768px) {
+    
+    .search-product-categories {
+        margin: 1rem 0;
+    }
+    
+    .search-product-categories h2 {
+        font-size: 1.3rem;
+    }
+    
+    .search-product-categories ul ul {
+        margin-left: 1rem;
+    } 
+ 
+    .custom-product-categories {
+        column-count: 1; /* Одна колонка на мобильных */
+    }
+    
+    .custom-product-categories-wrapper {
+        margin: 1rem 0;
+    }
+    
+    .custom-category-title {
+        font-size: 1.3rem;
+    }
 }

@@ -78,14 +78,33 @@ function mytheme_customize_register( $wp_customize ) {
     ) ) );
 }
 add_action( 'customize_register', 'mytheme_customize_register' );
-function my_theme_enqueue_styles() {
-    wp_enqueue_style('sale-products-style', get_template_directory_uri() . '/css/sale-products.css');
-     // Подключаем стиль для категорий товаров
-    wp_enqueue_style( 'shop-categories-style', get_template_directory_uri() . '/css/shop-categories.css' );
-    wp_enqueue_script('sale-products-js', get_template_directory_uri() . '/js/scroll.js', array(), null, true);
+// Регистрируем и подключаем стили/скрипты для акционных товаров
+function sale_products_assets() {
+    // Проверяем, нужно ли подключать наши стили на этой странице
+    if (is_page() || is_shop() || is_product_category()) {
+        // Регистрируем стили
+        wp_register_style(
+            'sale-products-style',
+            get_template_directory_uri() . '/css/sale-products.css',
+            array(),
+            filemtime(get_template_directory() . '/css/sale-products.css')
+        );
+        
+        // Регистрируем скрипт
+        wp_register_script(
+            'sale-products-scroll',
+            get_template_directory_uri() . '/js/scroll.js',
+            array('jquery'),
+            filemtime(get_template_directory() . '/js/scroll.js'),
+            true
+        );
+        
+        // Подключаем стили и скрипты
+        wp_enqueue_style('sale-products-style');
+        wp_enqueue_script('sale-products-scroll');
+    }
 }
-
-add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
+add_action('wp_enqueue_scripts', 'sale_products_assets');
  
 function enqueue_category_styles() {
     wp_enqueue_style('category-style', get_template_directory_uri() . '/css/category-style.css', array(), null);
@@ -350,12 +369,21 @@ add_action('woocommerce_before_single_product_summary', 'add_new_product_label',
 // Добавляем лейбл "Новый" в списке товаров и на странице related products
 add_action('woocommerce_before_shop_loop_item_title', 'add_new_product_label', 10);
 add_action('woocommerce_single_product_summary', 'add_new_product_label', 5);
+
+//подключениее new.css только на шаблонах категории, товара и поиска
 function enqueue_custom_styles() {
-    if (is_product_category() || is_single()) {
+    if (is_product_category() || is_single() || is_search() ||is_page()) {
         wp_enqueue_style('custom-category-styles', get_template_directory_uri() . '/css/new.css');
     }
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
+ 
+function enqueue_search_styles() {
+    if (is_search()) {
+        wp_enqueue_style('search-styles', get_template_directory_uri() . '/css/new.css', array(), filemtime(get_template_directory() . '/css/new.css'));
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_search_styles');
 
 function custom_product_list_shortcode($atts) {
     if (!is_tax('product_cat')) {
@@ -476,10 +504,267 @@ function custom_woocommerce_search_template($template) {
 }
 add_filter('template_include', 'custom_woocommerce_search_template');
 
-//подключаем стили для woocommerce-search.php
-function enqueue_search_styles() {
-    if (is_search() && class_exists('WooCommerce')) { // Подключаем только на странице поиска WooCommerce
-        wp_enqueue_style('search-css', get_template_directory_uri() . '/css/search.css', array(), null);
+//функция поиска только по товарам
+function custom_search_filter( $query ) {
+    if ( $query->is_search && !is_admin() && $query->get('s') ) {
+        // Ограничиваем поиск только постами типа 'product' (товары WooCommerce)
+        $query->set( 'post_type', 'product' );
     }
+    return $query;
 }
-add_action('wp_enqueue_scripts', 'enqueue_search_styles');
+add_action( 'pre_get_posts', 'custom_search_filter' );
+
+//очистить параметр в поисковой строке
+function remove_e_search_props_from_url( $url ) {
+    // Удаляем параметр e_search_props из URL
+    $url = remove_query_arg( 'e_search_props', $url );
+    return $url;
+}
+add_filter( 'redirect_canonical', 'remove_e_search_props_from_url' );
+
+//вывод категорий при поиске только тех чьи товары найдены
+function display_custom_product_categories() {
+    $args = array(
+        'taxonomy' => 'product_cat',
+        'hide_empty' => true,
+        'parent' => 0 // Только родительские категории
+    );
+    
+    $categories = get_terms($args);
+    
+    if ($categories && !is_wp_error($categories)) {
+        $output = '<div class="custom-category-sidebar">';
+        $output .= '<h3 class="custom-category-title">Категории</h3>';
+        $output .= '<ul class="category-list">';
+        
+        foreach ($categories as $category) {
+            $category_link = get_term_link($category);
+            $output .= '<li class="category-item"><a href="' . esc_url($category_link) . '" class="category-link">' . esc_html($category->name) . '</a>';
+            
+            // Получаем дочерние категории
+            $child_args = array(
+                'taxonomy' => 'product_cat',
+                'hide_empty' => true,
+                'parent' => $category->term_id
+            );
+            
+            $child_categories = get_terms($child_args);
+            
+            if ($child_categories && !is_wp_error($child_categories)) {
+                $output .= '<ul class="custom-child-categories">';
+                foreach ($child_categories as $child) {
+                    $child_link = get_term_link($child);
+                    $output .= '<li><a href="' . esc_url($child_link) . '">' . esc_html($child->name) . '</a></li>';
+                }
+                $output .= '</ul>';
+            }
+            
+            $output .= '</li>';
+        }
+        
+        $output .= '</ul>';
+        $output .= '</div>';
+        
+        return $output;
+    }
+    
+    return '';
+}
+
+// Создаем шорткод для использования в Elementor
+add_shortcode('custom_product_categories', 'display_custom_product_categories');
+
+//вывод найденных товаров по одному в строке
+function custom_search_products_output() {
+    ob_start();
+    
+    // Получаем текущий запрос WooCommerce
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => -1,
+        's' => get_search_query()
+    );
+    
+    $products = new WP_Query($args);
+    
+    echo '<div class="custom-product-list">';
+    
+    while ($products->have_posts()) {
+        $products->the_post();
+        global $product;
+        
+        $title = get_the_title();
+        $price = $product->get_price();
+        $condition = '';
+        
+        // Определяем состояние товара
+        if (preg_match('/\bнов(ый|ая|ые|ое)\b/ui', $title)) {
+            $condition = 'ТОВАР: НОВЫЙ';
+        } elseif (preg_match('/\bб\/у\b/ui', $title)) {
+            $condition = 'ТОВАР: Б/У';
+        }
+        
+        $product_id = $product->get_id();
+
+        // Определяем стиль для выравнивания цены
+        $price_style = 'text-align: right;'; // По умолчанию выравнивание по правому краю
+
+        // Если в заголовке есть слово "новый", "новая", "новые" или "Б/У", меняем выравнивание цены
+        if (preg_match('/\bнов(ый|ая|ые|ое)\b/ui', $title) || preg_match('/\bб\/у\b/ui', $title)) {
+            $price_style = 'text-align: left;'; // Изменяем выравнивание, если товар новый или Б/У
+        }
+        
+        echo '<div class="custom-product-item" style="border: 1px solid #fff; padding: 15px; box-sizing: border-box;">';
+        
+        // Блок изображения
+        echo '<div class="product-image">';
+        echo '<a href="' . get_permalink() . '">' . woocommerce_get_product_thumbnail('thumbnail') . '</a>';
+        echo '</div>';
+        
+        // Блок информации
+        echo '<div class="product-info" style="padding: 10px 0;">';
+        
+        // Название товара
+        echo '<h3 class="product-title"><a href="' . get_permalink() . '">' . $title . '</a></h3>';
+        
+        // Состояние и цена
+        echo '<div class="product-condition-price">';
+       echo '<span class="product-condition" style="flex-grow: 1;">' . ($condition ? $condition : '&nbsp;') . '</span>';
+        echo '<span class="product-price">Цена: ' . wc_price($price) . '</span>';
+        echo '</div>';
+        
+        // Контейнер для сообщения об актуальности цен
+        echo '<div class="price-note-container" style="margin-top: 0; padding-top: 0; border-top: 1px solid #fff;">';
+       //   echo '<p class="price-note">*Актуальные цены уточняйте у менеджеров</p>';
+        echo '</div>';
+        
+        // Кнопка "Посмотреть" после всех элементов карточки
+        echo '<div class="buy-button-container" style="text-align: right; margin-top: 10px;">';
+        echo '<a href="' . esc_url(get_permalink($product->get_id())) . '" class="single_add_to_cart_button elementor-button button wp-element-button">Посмотреть</a>';
+        echo '</div>';
+        
+        echo '</div>'; // закрываем search-item-info
+        echo '</div>'; // закрываем custom-search-item
+    }
+    
+    echo '</div>'; // закрываем custom-search-results
+    
+    wp_reset_postdata();
+    return ob_get_clean();
+}
+
+//Изменяем текст Заголовок Найденные товары * Обновляем заголовок для Elementor
+ function custom_elementor_search_title($title) {
+    if (is_search() && !is_admin()) {
+        global $wp_query;
+        $found_posts = $wp_query->found_posts;
+        $search_query = get_search_query();
+        
+        return sprintf(
+            '<h1 class="elementor-heading-title elementor-size-default">%s</h1>',
+            sprintf(
+                __('В каталоге найдено "%s" товаров по запросу "%s"', 'your-text-domain'),
+                number_format_i18n($found_posts),
+                esc_html($search_query)
+            )
+        );
+    }
+    return $title;
+}
+add_filter('elementor/utils/get_the_archive_title', 'custom_elementor_search_title');
+
+// Создаем шорткод
+add_shortcode('custom_search_results', 'custom_search_products_output');
+
+// Удаляем версии у всех стилей
+function remove_style_versions($src) {
+    if (strpos($src, 'ver=')) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+add_filter('style_loader_src', 'remove_style_versions', 9999);
+
+// Удаляем версии стилей WooCommerce
+function remove_woocommerce_style_versions($src) {
+    if (strpos($src, 'woocommerce') && strpos($src, 'ver=')) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+add_filter('style_loader_src', 'remove_woocommerce_style_versions', 9999);
+
+ 
+// Шорткод для вывода акционных товаров
+add_shortcode('sale_products', 'display_sale_products');
+function display_sale_products() {
+    // Принудительно подключаем стили и скрипты, если шорткод используется
+    wp_enqueue_style('sale-products-style');
+    wp_enqueue_script('sale-products-scroll');
+    ob_start();
+    ?>
+    <div class="sale-products-container">
+        <div class="sale-products-scroll">
+            <button class="scroll-button prev">‹</button>
+            <div class="sale-products-wrapper">
+                <?php
+                $args = array(
+                    'post_type' => 'product',
+                    'posts_per_page' => 10,
+                    'meta_query' => array(
+                        array(
+                            'key' => '_sale_price',
+                            'value' => 0,
+                            'compare' => '>',
+                            'type' => 'numeric'
+                        )
+                    )
+                );
+                $loop = new WP_Query($args);
+                
+                if ($loop->have_posts()) {
+                    while ($loop->have_posts()) : $loop->the_post();
+                        global $product;
+                        $regular_price = $product->get_regular_price();
+                        $sale_price = $product->get_sale_price();
+                        $categories = get_the_terms(get_the_ID(), 'product_cat');
+                        ?>
+                        <div class="sale-product-card">
+                            <?php if ($categories): ?>
+                                <a href="<?php echo get_term_link($categories[0]); ?>" class="product-category">
+                                    <?php echo esc_html($categories[0]->name); ?>
+                                </a>
+                            <?php endif; ?>
+                            
+                            <a href="<?php the_permalink(); ?>">
+                                <?php the_post_thumbnail('medium'); ?>
+                            </a>
+                            
+                            <div class="product-prices">
+                                <span class="sale-price"><?php echo wc_price($sale_price); ?></span>
+                                <?php if ($regular_price): ?>
+                                    <span class="regular-price"><?php echo wc_price($regular_price); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <h3 class="product-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                            
+                            <button class="add-to-cart-button" 
+                                    data-product_id="<?php echo esc_attr($product->get_id()); ?>">
+                                В корзину
+                            </button>
+                        </div>
+                    <?php
+                    endwhile;
+                } else {
+                    echo __('No sale products found');
+                }
+                wp_reset_postdata();
+                ?>
+            </div>
+            <button class="scroll-button next">›</button>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
